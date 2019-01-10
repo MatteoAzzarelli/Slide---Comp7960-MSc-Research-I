@@ -1,0 +1,360 @@
+\documentclass{beamer}
+\usepackage[english,italian]{babel}
+
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage[utf8]{inputenc}	%caratteri accentati
+
+\newcommand\tab[1][1cm]{\hspace*{#1}}	% define new command tab
+
+\usepackage[font=scriptsize]{subcaption}
+\usepackage[most]{tcolorbox}
+
+
+%------------------------------------------------
+%		Trasparenza liste
+%------------------------------------------------
+\setbeamercovered{transparent}
+
+
+%------------------------------------------------
+%		IMAGE DEFINITIONS
+%------------------------------------------------
+\usepackage{changepage}
+
+\usepackage{pgf,tikz}
+\usepackage{graphicx}
+
+\pgfdeclareimage[height=4cm]{GraphExample}{./images/Graph/GraphExample}
+\pgfdeclareimage[height=4cm]{socialNetwork}{./images/Graph/socialNetwork}
+\pgfdeclareimage[height=3.5cm]{sirModel}{./images/SIR/sir}
+\pgfdeclareimage[height=2.5cm]{seirModel}{./images/SIR/SEIR-SEIRS}
+\pgfdeclareimage[height=2.5cm]{sisModel}{./images/SIR/SI-SIS}
+\pgfdeclareimage[height=2.5cm]{sirsModel}{./images/SIR/SIR-SIRS}
+
+\pgfdeclareimage[width=12.8cm]{MOSSResults}{./images/MOSS/MOSSResults}
+\pgfdeclareimage[width=12.8cm]{MOSSResultMatch}{./images/MOSS/MOSSResultMatch}
+
+\pgfdeclareimage[width=10cm]{fingerprint02}{./images/MOSS/Fingerprint/fingerprint02}
+\pgfdeclareimage[width=8cm]{fingerprint03}{./images/MOSS/Fingerprint/fingerprint03}
+
+\definecolor{blueHKBU}{RGB}{0,0,210}
+
+\usetheme{Padova}
+
+\title{\vspace{1cm}How the spread of disease change on synthetic network and real network, simulation and comparison.}
+\subtitle{\vspace{-0cm}COMP7960 Research I}
+\author{%\vspace{-0.5cm}\textbf{Laureando}:\\
+	Matteo Azzarelli}
+\date{\vspace{2.5cm}\color{black}{\footnotesize{Academic year 2018/2019}}}
+
+
+
+\begin{document}
+
+    \AtBeginSection[]{
+      \begin{frame}{~}
+      \vfill
+      \centering
+      \begin{tcolorbox}[halign=center,colframe=blueHKBU, colback=blueHKBU!5!white]
+        \usebeamerfont{title}\insertsectionhead\par%
+      \end{tcolorbox}
+      \vfill
+      \end{frame}
+    }
+    
+	\maketitle
+
+	\begin{frame}{Outline}
+		\tableofcontents
+	\end{frame}
+
+	\section{Introduction}
+	
+	\begin{frame}{Introduction}
+		Why we developed this tool?
+		\pause
+		\begin{enumerate}[<+->]
+			\item Evaluate the different spread behaviours of disease on different network using Python.
+			\item Analyse how the spread of disease change based on different network connections using \textbf{SIR model}.
+			\item Compare synthetic network with real network, Facebook like.
+			
+		\end{enumerate}
+	\end{frame}
+
+	\section{Graph - Network}
+	
+	\begin{frame}{Network}
+		What is it a \textbf{Network}?
+		
+		\vspace{0.5cm}
+		A \textbf{Network} is a particular representation of a \textit{Graph}.
+		
+		\vspace{0.5cm}
+		A Graph is a pair of set, $G = (V, E)$, where 
+		\begin{itemize}
+		    \item \textbf{V} is the set of \textit{vertices} or also called \textit{
+nodes}.
+		    \item \textbf{E} is a set of \textit{edges}. An edge is a link between two Vertices.
+		\end{itemize}
+		\begin{center}
+			\pgfuseimage{GraphExample}
+		\end{center}
+	\end{frame}
+	
+
+	\begin{frame}{Network physical meaning}
+	    The fiscal meaning is:
+		\begin{itemize}[<+->]
+		    \item \textbf{Node}: represent the pool of person. So, each node correspond to a person in this network.
+		    \item \textbf{Edges}: represent communications among people, so if there is a link between two nodes that means that they are in contact.
+		    \item \textbf{Network}: is a portion of the real world that represent the connection and interaction in this mini-world.
+		\end{itemize}
+		\begin{left}
+			\pgfuseimage{socialNetwork}
+		\end{left}
+	\end{frame}
+
+
+
+	\section{SIR model}
+	
+	\begin{frame}{Compartmental models}
+	    \textbf{Compartmental models} are a technique used to simplify the mathematical modelling of infectious disease.
+	    
+	    The \textbf{population} is \textbf{divided} into compartments, with the assumption that every individual in the same compartment has the \textbf{same characteristics}.
+	\end{frame}
+	
+	\begin{frame}{SIR model}
+	    What is it SIR model?
+	    \begin{center}
+			\pgfuseimage{sirModel}
+		\end{center}
+		\begin{itemize}\footnotesize
+		    \item \textbf{Susceptible}: it means that this person is susceptible to ketch the disease.
+		    \item \textbf{Infected}: this status represent people that have the disease and that can spread it.
+		    \item \textbf{Recovered}: represent the people that had the disease and now they are recovered/immunised.
+		\end{itemize}
+	\end{frame}
+	
+	\begin{frame}{More models}
+	    There are many variants of this model like:
+        \begin{itemize}[<+->]
+            \item \textbf{SEIRS}\only<1>{: this model provide the Exposed(E) class where the person has the disease but it doesn’t spread it on to susceptible nodes.} \only<1,4>{This kind of model is suitable for disease with a \textbf{long incubation disease}.}\only<1>{
+            \begin{center}
+			    \pgfuseimage{seirModel}
+		    \end{center}}
+            \item \textbf{SIS}\only<2>{: here there are only three states and modelling disease that after the state of infection the people come back to the state of susceptible.
+            \begin{center}
+			    \pgfuseimage{sisModel}
+		    \end{center}
+            }
+            \item \textbf{SIRS}\only<3>{: this one is a variant of the previous model that introduce a stage of immunity for a certain time after that the person can be infected again.
+            \begin{center}
+			    \pgfuseimage{sirsModel}
+		    \end{center}
+            }
+        \end{itemize}
+
+        \only<4>{The previous last two models are typically used to represent different \textbf{epidemics disease} such as HIV or SARS [3].}
+	\end{frame}
+	
+% 	\begin{frame}{Plagio}
+% 		\begin{alertblock}{Definizione}
+% 			Un programma che è stato prodotto da un altro e riportato con un numero esiguo di trasformazioni di routine.
+			
+% 			\hspace{4cm}\textit{1976. Alan Parker e James O. Hamblen.}
+% 		\end{alertblock}
+		
+% 		\vspace{-0.5cm}
+% 		\begin{center}
+% 			\pgfuseimage{PlagiarismLevels}
+% 		\end{center}
+% 	\end{frame}
+	
+
+	\section{Network Models}
+	
+% 	\begin{frame}{Studio ed Implementazione}
+% 		Caratteristiche dell'applicazione:
+% 		\begin{itemize}
+% 			\item<1-> Sviluppata in \textbf{Java}:
+% 				\begin{itemize}
+% 					\item \`E cross-platform.
+% 					\item Documentazione completa.
+% 					\item Esistenza di librerie per il nostro scopo.
+% 				\end{itemize}
+% 			\item<2-> Utilizzo del pattern Model View Controller.
+% 			\item<3-> Download delle repositories di GitHub.
+% 			\item<4-> Analisi dei progetti degli studenti tramite il servizio MOSS.
+% 		\end{itemize}
+% 	\end{frame}
+	
+	\begin{frame}{Studio ed Implementazione: MVC}
+		Diagramma UML della struttura del software:
+		\begin{center}
+			\pgfuseimage{UMLMVC}
+		\end{center}
+	\end{frame}
+	
+	\begin{frame}{Studio ed Implementazione: GitHub}
+		\vspace{-0.2cm}
+		Organizzazione delle repositories:
+		\begin{center}
+			\pgfuseimage{GitHubClasses}
+		\end{center}
+	\end{frame}
+	
+	\begin{frame}{Studio ed Implementazione: Interfaccia}
+		\vspace{-0.2cm}
+		Uno sguardo all'interfaccia:
+		\begin{center}
+			\pgfuseimage{InterfacciaGrafica}
+		\end{center}
+	\end{frame}
+	
+	\begin{frame}{MOSS}
+		MOSS (Measure Of Software Similarity) è un sistema automatico per determinare la similarità di programmi.
+		
+		\begin{itemize}
+			\item[Input] Accetta gruppi di documenti.
+			\item[Output] Restituisce un'insieme di pagine HTML contenenti le coppie di documenti simili.
+		\end{itemize}
+		
+		\pause
+		Può analizzare molti linguaggi di programmazione, come ad esempio:
+		\begin{itemize}
+			\item \texttt{C, C++ e C\#}
+			\item \texttt{Java}
+			\item Il linguaggio naturale e molti altri.
+		\end{itemize}
+	\end{frame}
+
+	\begin{frame}{MOSS: Funzionamento}
+		Con poche fingerprint ottiene ottimi risultati. Ciò implica maggiore efficienza.
+		
+		Algoritmo:
+			
+			\vspace{-0.5cm}{\footnotesize \textbf{1)} Costruisce un indice che mappa le fingerprint alle locazioni per tutti i documenti.}
+	\end{frame}
+
+	\begin{frame}{MOSS: Funzionamento}
+		\vspace{-0.8cm}\begin{center}
+			\pgfuseimage{fingerprint02}
+		\end{center}
+		\vspace{-0.5cm}{\footnotesize \textbf{2)} Per ogni documento viene effettuata una nuova fingerprint, ottenendo una lista di fingerprint per ciascun documento. Ora ogni documento \texttt{d} può contenere fingerprint di molti altri documenti \texttt{d1,d2,...}.}
+	\end{frame}
+	
+	\begin{frame}{MOSS: Funzionamento}
+		\vspace{-0.5cm}\begin{center}
+			\pgfuseimage{fingerprint03}
+		\end{center}
+		\vspace{-0.5cm}{\footnotesize \textbf{3)} La lista delle fingerprint viene raggruppata per documento e poi vengono fatte le coppie di documenti \texttt{(d,d1), (d,d2)}.
+		Queste coppie vengono ordinate per numero di fingerprint uguali.}
+	\end{frame}
+	
+	\begin{frame}{MOSS: Fingerprint}
+		
+		{\footnotesize Generare le fingerprint:
+		\begin{itemize}[<+->]
+			\item Divide un documento in k-grams, cioè in sottostringhe di lunghezza k
+			\begin{exampleblock}{\footnotesize Esempio k-gram}
+				\begin{tcolorbox}[size=small]
+					A do run run run, a do run run
+				\end{tcolorbox}
+				(a) un po di testo [The Crystals. Da do run run, 1963]
+				\pause
+				\begin{tcolorbox}[size=small]
+					adorunrunrunadorunrun
+				\end{tcolorbox}
+				(b) il testo senza alcune caratteristiche irrilevanti
+				\pause
+				\begin{tcolorbox}[size=small]
+					adoru dorun orunr runru unrun nrunr runru
+					
+					unrun nruna runad unado nador adoru dorun
+					
+					orunr runru unrun
+				\end{tcolorbox}
+				(c) la sequenza di 5-grams derivata dal testo
+			\end{exampleblock}
+			\pause
+			\item Utilizza una funzione hash per ogni k-gram e selezioniamo tra essi qualche sottoinsieme, che sarà la fingerprint.
+		\end{itemize}
+	}
+	\end{frame}
+
+	\begin{frame}{MOSS: Servizio}
+		MOSS mette a disposizione un webservice accessibile tramite vari script e librerie.
+		
+		Per il nostro progetto abbiamo utilizzato la libreria Java \textbf{MOJI} che consente l'accesso al servizio.
+		
+		\pause
+		Questa libreria permette di:
+		\begin{enumerate}[<+->]
+			\item Connettersi al server con il proprio numero utente.
+			\item Inviare la cartella contenente tutti i progetti degli studenti.
+			\item Inviare la cartella contenente il modello del progetto.
+			\item Ricevere il link per visualizzare la pagina HTML dei risultati.
+		\end{enumerate}
+	\end{frame}
+
+	\begin{frame}{MOSS: Servizio}
+		\begin{block}{Struttura cartella dei progetti}
+		 	\begin{tcolorbox}
+				\texttt{\tab solution\_directory\\ 
+					\tab $\vert$- student1\\
+					\tab[1.5cm] $\vert$- main.c\\
+					\tab[1.5cm] $\vert$- ...\\
+					\tab $\vert$- student2\\
+					\tab[1.5cm] $\vert$- ...\\
+					\tab $\vert$\_ student3\\
+					\tab[1.5cm] $\vert$- ...
+				}
+			\end{tcolorbox}
+		\end{block}
+	\end{frame}
+	
+	\begin{frame}{MOSS: Risultati}
+		\begin{adjustwidth}{-1cm}{-1cm}
+			\pgfuseimage{MOSSResults}
+		\end{adjustwidth}
+	\end{frame}
+
+
+
+	\begin{frame}{MOSS: Risultati}
+		\begin{adjustwidth}{-1cm}{-1cm}
+			\pgfuseimage{MOSSResultMatch}
+		\end{adjustwidth}
+	\end{frame}
+
+	\section{Conclusioni}
+
+	
+	\begin{frame}{Conclusioni}
+		Obiettivi raggiunti:
+		\begin{enumerate}
+			\item Scaricare i progetti assegnati su GitHub Classroom.
+			\item Gestire ed analizzare centinaia di progetti, analizzandoli tramite MOSS.
+		\end{enumerate}
+		L'applicazione è stata testata sul campo riportando risultati positivi.
+		\pause
+		
+		\vspace{0.5cm}
+		{\small \textbf{Futuri ampliamenti}:
+		\begin{itemize}
+			\item Download dei risultati di MOSS (MOSS li elimina dopo 14 giorni).
+			\item Analisi statica dei progetti (es. Valgrind), per fornire un aiuto al docente con una pre-valutazione del progetto.
+			\item Ottenere il nome e il cognome degli studenti dal file ReadMe delle repositories e costruire dinamicamente un gestionale degli strumenti.
+		\end{itemize}}
+	\end{frame}
+
+	\begin{frame}{Conclusioni}
+		\begin{center}
+			{\Huge \textcolor{rossoPantano}{\textbf{Grazie per l'attenzione}}}
+		\end{center}
+		
+	\end{frame}
+
+\end{document}
