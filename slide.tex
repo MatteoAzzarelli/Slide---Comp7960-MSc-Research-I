@@ -10,6 +10,8 @@
 \usepackage[font=scriptsize]{subcaption}
 \usepackage[most]{tcolorbox}
 
+%insert code
+\usepackage{listings}
 
 %------------------------------------------------
 %		Trasparenza liste
@@ -27,16 +29,28 @@
 
 \pgfdeclareimage[height=4cm]{GraphExample}{./images/Graph/GraphExample}
 \pgfdeclareimage[height=4cm]{socialNetwork}{./images/Graph/socialNetwork}
+\pgfdeclareimage[height=4cm]{SIRGraphFacebook}{./images/Graph/SIRGraphFacebook}
 \pgfdeclareimage[height=3.5cm]{sirModel}{./images/SIR/sir}
 \pgfdeclareimage[height=2.5cm]{seirModel}{./images/SIR/SEIR-SEIRS}
 \pgfdeclareimage[height=2.5cm]{sisModel}{./images/SIR/SI-SIS}
 \pgfdeclareimage[height=2.5cm]{sirsModel}{./images/SIR/SIR-SIRS}
 
-\pgfdeclareimage[width=12.8cm]{MOSSResults}{./images/MOSS/MOSSResults}
-\pgfdeclareimage[width=12.8cm]{MOSSResultMatch}{./images/MOSS/MOSSResultMatch}
+\pgfdeclareimage[width=12.8cm]{randomFunction}{./images/Code/RandomFunction}
+\pgfdeclareimage[width=12.8cm]{preferentialAttachmentFunction}{./images/Code/preferentialAttachmentFunction}
 
-\pgfdeclareimage[width=10cm]{fingerprint02}{./images/MOSS/Fingerprint/fingerprint02}
-\pgfdeclareimage[width=8cm]{fingerprint03}{./images/MOSS/Fingerprint/fingerprint03}
+
+\pgfdeclareimage[height=4cm]{DegreeHistogramRandom}{./images/Graph/DegreeHistogramRandom}
+\pgfdeclareimage[width=6cm]{poissonDistribution}{./images/Graph/poissonDistribution}
+\pgfdeclareimage[height=4cm]{DegreeHistogramPrefAttach01}{./images/Graph/DegreeHistogramPrefAttach}
+\pgfdeclareimage[height=4cm]{DegreeHistogramPrefAttach02}{./images/Graph/DegreeHistogramPrefAttach01}
+
+\pgfdeclareimage[height=6cm]{PANet}{./images/Graph/PAa0.25m4.5}
+\pgfdeclareimage[height=6cm]{RNet}{./images/Graph/RNet}
+\pgfdeclareimage[height=6cm]{FNet}{./images/Graph/FNet}
+\pgfdeclareimage[height=6cm]{PASIR}{./images/Graph/PASIR}
+\pgfdeclareimage[height=6cm]{RSIR}{./images/Graph/RSIR}
+\pgfdeclareimage[height=6cm]{FSIR}{./images/Graph/FSIR}
+
 
 \definecolor{blueHKBU}{RGB}{0,0,210}
 
@@ -190,169 +204,360 @@ nodes}.
 % 		\end{itemize}
 % 	\end{frame}
 	
-	\begin{frame}{Studio ed Implementazione: MVC}
-		Diagramma UML della struttura del software:
-		\begin{center}
-			\pgfuseimage{UMLMVC}
-		\end{center}
-	\end{frame}
-	
-	\begin{frame}{Studio ed Implementazione: GitHub}
-		\vspace{-0.2cm}
-		Organizzazione delle repositories:
-		\begin{center}
-			\pgfuseimage{GitHubClasses}
-		\end{center}
-	\end{frame}
-	
-	\begin{frame}{Studio ed Implementazione: Interfaccia}
-		\vspace{-0.2cm}
-		Uno sguardo all'interfaccia:
-		\begin{center}
-			\pgfuseimage{InterfacciaGrafica}
-		\end{center}
-	\end{frame}
-	
-	\begin{frame}{MOSS}
-		MOSS (Measure Of Software Similarity) è un sistema automatico per determinare la similarità di programmi.
-		
+	\begin{frame}{Python}
+		We chose \textbf{Python}:
 		\begin{itemize}
-			\item[Input] Accetta gruppi di documenti.
-			\item[Output] Restituisce un'insieme di pagine HTML contenenti le coppie di documenti simili.
+		    \item Easy and flexible language.
+		    \item There are some libraries that help us like 
+		    \begin{itemize}
+		        \item \textbf{NetworkX}: it provide a good \textbf{representation for graphs} and networks. In addition, it gives many related algorithm.
+		        \item \textbf{MatPlotLib}: to draw and print into files our graphs.
+		    \end{itemize}
 		\end{itemize}
-		
+	\end{frame}
+	
+	\begin{frame}{SIR parameter}
+	    \begin{alertblock}{Definition of Neighbour}
+			The set of neighbour of a vertex $v \in V$ is denoted with $N_G(v) = \{u_1, u_2, ..., u_i \}$, where $u_k,~k=1,...,i$, is adjacent to a given vertex \verb|v|.
+		\end{alertblock}
 		\pause
-		Può analizzare molti linguaggi di programmazione, come ad esempio:
-		\begin{itemize}
-			\item \texttt{C, C++ e C\#}
-			\item \texttt{Java}
-			\item Il linguaggio naturale e molti altri.
-		\end{itemize}
+	    \begin{itemize}
+	        \item \textbf{$\beta$}: the susceptible population have a fixed probability per unit time to get the disease from any infected neighbour.
+	        \item \textbf{$\gamma$}: the fixed probability per unit time that represent the probability to be recovered/immunised.
+	    \end{itemize}
 	\end{frame}
-
-	\begin{frame}{MOSS: Funzionamento}
-		Con poche fingerprint ottiene ottimi risultati. Ciò implica maggiore efficienza.
+	
+	\begin{frame}{SIR equation}
+	    With this parameter we can model the population susceptible, infected and recovered by a system of ordinary differential equation:
+	    \begin{equation}\label{eq:diffEq}
+          \left\{
+            \begin{matrix}
+                \frac{\mathrm{d} s}{\mathrm{d} t} = -\beta si, &&
+                \frac{\mathrm{d} i}{\mathrm{d} t} = \beta si - \gamma i, &&
+                \frac{\mathrm{d} r}{\mathrm{d} t} = \gamma i
+            \end{matrix}\right.
+        \end{equation}
+        \begin{center}
+			\pgfuseimage{SIRGraphFacebook}
+		\end{center}
 		
-		Algoritmo:
+		For our simulation we used $\beta = 0.03$ and $\gamma = 0.04$ .
+	\end{frame}
+	
+	\begin{frame}{Random Network Function}
+        \begin{adjustwidth}{-1cm}{-1cm}
+			\pgfuseimage{randomFunction}
+		\end{adjustwidth}
+	\end{frame}
+	
+	\begin{frame}{R Degree distribution}
+		Because of the nature of random number, the nodes' degree distribution will follow the Poisson distribution, defined by the Eq.\ref{eq:poisson}.
+        \begin{equation}\label{eq:poisson}
+          p(k) \approx \frac{\lambda^ke^{-\lambda}}{k!}
+        \end{equation}
+        The parameter $\lambda = N P$, where $N = |V|$ and P is the probability to establish a connection. 
+        
+        \begin{left}
+			\pgfuseimage{DegreeHistogramRandom}
+			\pgfuseimage{poissonDistribution}
+		\end{left}
+	\end{frame}
+	\begin{frame}{Random Network}
+	    \begin{center}
+			\pgfuseimage{RNet}
+		\end{center}
+	    \footnotesize{
+		    N = 1000,
+		    P = 0.052
+		}
+	\end{frame}
+	
+	\begin{frame}{Preferential attachment Network Function}
+        \begin{adjustwidth}{-1cm}{-1cm}
+			\pgfuseimage{preferentialAttachmentFunction}
+		\end{adjustwidth}
+	\end{frame}
+	
+	\begin{frame}{Preferential attachment}
+		The probability if is defined by the preferential attachment equation Eq.\ref{eq:prefAttach}.
+        \begin{equation}\label{eq:prefAttach}
+          P(k) = \frac{B(k+a,\gamma)}{B(K_0 + a, \gamma - 1)}
+        \end{equation}
+        
+        for $k \geq k_0$ and zero otherwise, where $B(x,y)$ is the Euler beta function Eq.\ref{eq:euler}:
+        \begin{equation}\label{eq:euler}
+          B(x,y) = \frac{\Gamma(x)\Gamma(y)}{\Gamma(x+y)}
+        \end{equation}
+        
+        with $\Gamma(x)$ is the standard gamma function, and $\gamma$ is defined as in the  Eq.\ref{eq:gamma}
+        \begin{equation}\label{eq:gamma}
+          B(x,y) = 2+ \frac{k_0+a}{m}
+        \end{equation}
+        
+        \hfill{continue...}
+        
+    \end{frame}
+    
+    \begin{frame}{PA Degree distribution}
+        \textbf{a}~$> -k_0$ characterise the \textbf{width} of the curve,
+        
+        \textbf{m} is the \textbf{number of link} that will \textbf{added}, so the slope of this curve
+        
+        \begin{left}
+			\pgfuseimage{DegreeHistogramPrefAttach01}
+			\pgfuseimage{DegreeHistogramPrefAttach02}
+		\end{left}
+		
+		\footnotesize{
+		    N = 1000,
+		    a = 0.25,
+		    m = 4.5
+		}
+		\hfill
+		\footnotesize{
+		    N = 1000,
+		    a = 50,
+		    m = 0.1
+		}
+	\end{frame}
+	
+	\begin{frame}{Preferential Attachment Network}
+	    \begin{center}
+			\pgfuseimage{PANet}
+		\end{center}
+	    \footnotesize{
+		    N = 1000,
+		    a = 0.25,
+		    m = 4.5
+		}
+	\end{frame}
+	
+	\begin{frame}{Facebook Network}
+	    Data set taken from Stanford SNAP, it represent a portion of Facebook network.
+	    \begin{center}
+			\pgfuseimage{FNet}
+		\end{center}
+	    \footnotesize{
+		    N = 4039,
+		    E = 88234
+		}
+	\end{frame}
+	
+	\section{Results}
+	
+	\begin{frame}{SIR Comparison}
+	    For our test we set the parameter $|V|=N=1000$, $\beta = 0.01$ (transmission rate) and $\gamma= 0.04$ (recovery rate).
+    
+        Degree of our network:
+        \begin{itemize}
+            \item Synthetic network, Random and Preferential Attachment Degree around 20 to 50 link per node.
+            \item Facebook network degree is 175 link per node
+        \end{itemize}
+	\end{frame}
+	
+	\begin{frame}{Random Network SIR}
+	    \begin{center}
+			\pgfuseimage{RSIR}
+		\end{center}
+		\footnotesize{
+		    N = 1000,
+		    P = 0.052,
+		    $\beta = 0.01$ and $\gamma= 0.04$
+		}
+	\end{frame}
+	
+	\begin{frame}{Preferential Attachment Network SIR}
+	    \begin{center}
+			\pgfuseimage{PASIR}
+		\end{center}
+		\footnotesize{
+		    N = 1000,
+		    a = 0.25,
+		    m = 4.5,
+		    $\beta = 0.01$ and $\gamma= 0.04$
+		}
+	\end{frame}
+	
+	\begin{frame}{Facebook Network SIR}
+	    \begin{center}
+			\pgfuseimage{FSIR}
+		\end{center}
+		\footnotesize{
+		    N = 4039,
+		    E = 88234,
+		    $\beta = 0.01$ and $\gamma= 0.04$
+		}
+	\end{frame}
+	
+	\begin{frame}{Conclusion}
+	    The \textbf{Facebook Network} have a different behaviour because it has \textbf{cluster} of population.
+	    \vspace{0.5cm}
+	    
+	    The \textbf{Preferential Attachment} network is more close to the real network rather than the random network.
+	    \vspace{0.5cm}
+	    
+	    To improve the similarity and consequently have better simulations we could implement \textbf{cluster of people} mixed with Preferential Attachment network.
+	    
+	    
+	    
+	\end{frame}
+	
+% 	\begin{frame}{Studio ed Implementazione: GitHub}
+% 		\vspace{-0.2cm}
+% 		Organizzazione delle repositories:
+% 		\begin{center}
+% 			\pgfuseimage{GitHubClasses}
+% 		\end{center}
+% 	\end{frame}
+	
+% 	\begin{frame}{Studio ed Implementazione: Interfaccia}
+% 		\vspace{-0.2cm}
+% 		Uno sguardo all'interfaccia:
+% 		\begin{center}
+% 			\pgfuseimage{InterfacciaGrafica}
+% 		\end{center}
+% 	\end{frame}
+	
+% 	\begin{frame}{MOSS}
+% 		MOSS (Measure Of Software Similarity) è un sistema automatico per determinare la similarità di programmi.
+		
+% 		\begin{itemize}
+% 			\item[Input] Accetta gruppi di documenti.
+% 			\item[Output] Restituisce un'insieme di pagine HTML contenenti le coppie di documenti simili.
+% 		\end{itemize}
+		
+% 		\pause
+% 		Può analizzare molti linguaggi di programmazione, come ad esempio:
+% 		\begin{itemize}
+% 			\item \texttt{C, C++ e C\#}
+% 			\item \texttt{Java}
+% 			\item Il linguaggio naturale e molti altri.
+% 		\end{itemize}
+% 	\end{frame}
+
+% 	\begin{frame}{MOSS: Funzionamento}
+% 		Con poche fingerprint ottiene ottimi risultati. Ciò implica maggiore efficienza.
+		
+% 		Algoritmo:
 			
-			\vspace{-0.5cm}{\footnotesize \textbf{1)} Costruisce un indice che mappa le fingerprint alle locazioni per tutti i documenti.}
-	\end{frame}
+% 			\vspace{-0.5cm}{\footnotesize \textbf{1)} Costruisce un indice che mappa le fingerprint alle locazioni per tutti i documenti.}
+% 	\end{frame}
 
-	\begin{frame}{MOSS: Funzionamento}
-		\vspace{-0.8cm}\begin{center}
-			\pgfuseimage{fingerprint02}
-		\end{center}
-		\vspace{-0.5cm}{\footnotesize \textbf{2)} Per ogni documento viene effettuata una nuova fingerprint, ottenendo una lista di fingerprint per ciascun documento. Ora ogni documento \texttt{d} può contenere fingerprint di molti altri documenti \texttt{d1,d2,...}.}
-	\end{frame}
+% 	\begin{frame}{MOSS: Funzionamento}
+% 		\vspace{-0.8cm}\begin{center}
+% 			\pgfuseimage{fingerprint02}
+% 		\end{center}
+% 		\vspace{-0.5cm}{\footnotesize \textbf{2)} Per ogni documento viene effettuata una nuova fingerprint, ottenendo una lista di fingerprint per ciascun documento. Ora ogni documento \texttt{d} può contenere fingerprint di molti altri documenti \texttt{d1,d2,...}.}
+% 	\end{frame}
 	
-	\begin{frame}{MOSS: Funzionamento}
-		\vspace{-0.5cm}\begin{center}
-			\pgfuseimage{fingerprint03}
-		\end{center}
-		\vspace{-0.5cm}{\footnotesize \textbf{3)} La lista delle fingerprint viene raggruppata per documento e poi vengono fatte le coppie di documenti \texttt{(d,d1), (d,d2)}.
-		Queste coppie vengono ordinate per numero di fingerprint uguali.}
-	\end{frame}
+% 	\begin{frame}{MOSS: Funzionamento}
+% 		\vspace{-0.5cm}\begin{center}
+% 			\pgfuseimage{fingerprint03}
+% 		\end{center}
+% 		\vspace{-0.5cm}{\footnotesize \textbf{3)} La lista delle fingerprint viene raggruppata per documento e poi vengono fatte le coppie di documenti \texttt{(d,d1), (d,d2)}.
+% 		Queste coppie vengono ordinate per numero di fingerprint uguali.}
+% 	\end{frame}
 	
-	\begin{frame}{MOSS: Fingerprint}
+% 	\begin{frame}{MOSS: Fingerprint}
 		
-		{\footnotesize Generare le fingerprint:
-		\begin{itemize}[<+->]
-			\item Divide un documento in k-grams, cioè in sottostringhe di lunghezza k
-			\begin{exampleblock}{\footnotesize Esempio k-gram}
-				\begin{tcolorbox}[size=small]
-					A do run run run, a do run run
-				\end{tcolorbox}
-				(a) un po di testo [The Crystals. Da do run run, 1963]
-				\pause
-				\begin{tcolorbox}[size=small]
-					adorunrunrunadorunrun
-				\end{tcolorbox}
-				(b) il testo senza alcune caratteristiche irrilevanti
-				\pause
-				\begin{tcolorbox}[size=small]
-					adoru dorun orunr runru unrun nrunr runru
+% 		{\footnotesize Generare le fingerprint:
+% 		\begin{itemize}[<+->]
+% 			\item Divide un documento in k-grams, cioè in sottostringhe di lunghezza k
+% 			\begin{exampleblock}{\footnotesize Esempio k-gram}
+% 				\begin{tcolorbox}[size=small]
+% 					A do run run run, a do run run
+% 				\end{tcolorbox}
+% 				(a) un po di testo [The Crystals. Da do run run, 1963]
+% 				\pause
+% 				\begin{tcolorbox}[size=small]
+% 					adorunrunrunadorunrun
+% 				\end{tcolorbox}
+% 				(b) il testo senza alcune caratteristiche irrilevanti
+% 				\pause
+% 				\begin{tcolorbox}[size=small]
+% 					adoru dorun orunr runru unrun nrunr runru
 					
-					unrun nruna runad unado nador adoru dorun
+% 					unrun nruna runad unado nador adoru dorun
 					
-					orunr runru unrun
-				\end{tcolorbox}
-				(c) la sequenza di 5-grams derivata dal testo
-			\end{exampleblock}
-			\pause
-			\item Utilizza una funzione hash per ogni k-gram e selezioniamo tra essi qualche sottoinsieme, che sarà la fingerprint.
-		\end{itemize}
-	}
-	\end{frame}
+% 					orunr runru unrun
+% 				\end{tcolorbox}
+% 				(c) la sequenza di 5-grams derivata dal testo
+% 			\end{exampleblock}
+% 			\pause
+% 			\item Utilizza una funzione hash per ogni k-gram e selezioniamo tra essi qualche sottoinsieme, che sarà la fingerprint.
+% 		\end{itemize}
+% 	}
+% 	\end{frame}
 
-	\begin{frame}{MOSS: Servizio}
-		MOSS mette a disposizione un webservice accessibile tramite vari script e librerie.
+% 	\begin{frame}{MOSS: Servizio}
+% 		MOSS mette a disposizione un webservice accessibile tramite vari script e librerie.
 		
-		Per il nostro progetto abbiamo utilizzato la libreria Java \textbf{MOJI} che consente l'accesso al servizio.
+% 		Per il nostro progetto abbiamo utilizzato la libreria Java \textbf{MOJI} che consente l'accesso al servizio.
 		
-		\pause
-		Questa libreria permette di:
-		\begin{enumerate}[<+->]
-			\item Connettersi al server con il proprio numero utente.
-			\item Inviare la cartella contenente tutti i progetti degli studenti.
-			\item Inviare la cartella contenente il modello del progetto.
-			\item Ricevere il link per visualizzare la pagina HTML dei risultati.
-		\end{enumerate}
-	\end{frame}
+% 		\pause
+% 		Questa libreria permette di:
+% 		\begin{enumerate}[<+->]
+% 			\item Connettersi al server con il proprio numero utente.
+% 			\item Inviare la cartella contenente tutti i progetti degli studenti.
+% 			\item Inviare la cartella contenente il modello del progetto.
+% 			\item Ricevere il link per visualizzare la pagina HTML dei risultati.
+% 		\end{enumerate}
+% 	\end{frame}
 
-	\begin{frame}{MOSS: Servizio}
-		\begin{block}{Struttura cartella dei progetti}
-		 	\begin{tcolorbox}
-				\texttt{\tab solution\_directory\\ 
-					\tab $\vert$- student1\\
-					\tab[1.5cm] $\vert$- main.c\\
-					\tab[1.5cm] $\vert$- ...\\
-					\tab $\vert$- student2\\
-					\tab[1.5cm] $\vert$- ...\\
-					\tab $\vert$\_ student3\\
-					\tab[1.5cm] $\vert$- ...
-				}
-			\end{tcolorbox}
-		\end{block}
-	\end{frame}
+% 	\begin{frame}{MOSS: Servizio}
+% 		\begin{block}{Struttura cartella dei progetti}
+% 		 	\begin{tcolorbox}
+% 				\texttt{\tab solution\_directory\\ 
+% 					\tab $\vert$- student1\\
+% 					\tab[1.5cm] $\vert$- main.c\\
+% 					\tab[1.5cm] $\vert$- ...\\
+% 					\tab $\vert$- student2\\
+% 					\tab[1.5cm] $\vert$- ...\\
+% 					\tab $\vert$\_ student3\\
+% 					\tab[1.5cm] $\vert$- ...
+% 				}
+% 			\end{tcolorbox}
+% 		\end{block}
+% 	\end{frame}
 	
-	\begin{frame}{MOSS: Risultati}
-		\begin{adjustwidth}{-1cm}{-1cm}
-			\pgfuseimage{MOSSResults}
-		\end{adjustwidth}
-	\end{frame}
+% 	\begin{frame}{MOSS: Risultati}
+% 		\begin{adjustwidth}{-1cm}{-1cm}
+% 			\pgfuseimage{MOSSResults}
+% 		\end{adjustwidth}
+% 	\end{frame}
 
 
 
-	\begin{frame}{MOSS: Risultati}
-		\begin{adjustwidth}{-1cm}{-1cm}
-			\pgfuseimage{MOSSResultMatch}
-		\end{adjustwidth}
-	\end{frame}
+% 	\begin{frame}{MOSS: Risultati}
+% 		\begin{adjustwidth}{-1cm}{-1cm}
+% 			\pgfuseimage{MOSSResultMatch}
+% 		\end{adjustwidth}
+% 	\end{frame}
 
-	\section{Conclusioni}
+% 	\section{Conclusioni}
 
 	
-	\begin{frame}{Conclusioni}
-		Obiettivi raggiunti:
-		\begin{enumerate}
-			\item Scaricare i progetti assegnati su GitHub Classroom.
-			\item Gestire ed analizzare centinaia di progetti, analizzandoli tramite MOSS.
-		\end{enumerate}
-		L'applicazione è stata testata sul campo riportando risultati positivi.
-		\pause
+% 	\begin{frame}{Conclusioni}
+% 		Obiettivi raggiunti:
+% 		\begin{enumerate}
+% 			\item Scaricare i progetti assegnati su GitHub Classroom.
+% 			\item Gestire ed analizzare centinaia di progetti, analizzandoli tramite MOSS.
+% 		\end{enumerate}
+% 		L'applicazione è stata testata sul campo riportando risultati positivi.
+% 		\pause
 		
-		\vspace{0.5cm}
-		{\small \textbf{Futuri ampliamenti}:
-		\begin{itemize}
-			\item Download dei risultati di MOSS (MOSS li elimina dopo 14 giorni).
-			\item Analisi statica dei progetti (es. Valgrind), per fornire un aiuto al docente con una pre-valutazione del progetto.
-			\item Ottenere il nome e il cognome degli studenti dal file ReadMe delle repositories e costruire dinamicamente un gestionale degli strumenti.
-		\end{itemize}}
-	\end{frame}
+% 		\vspace{0.5cm}
+% 		{\small \textbf{Futuri ampliamenti}:
+% 		\begin{itemize}
+% 			\item Download dei risultati di MOSS (MOSS li elimina dopo 14 giorni).
+% 			\item Analisi statica dei progetti (es. Valgrind), per fornire un aiuto al docente con una pre-valutazione del progetto.
+% 			\item Ottenere il nome e il cognome degli studenti dal file ReadMe delle repositories e costruire dinamicamente un gestionale degli strumenti.
+% 		\end{itemize}}
+% 	\end{frame}
 
 	\begin{frame}{Conclusioni}
 		\begin{center}
-			{\Huge \textcolor{rossoPantano}{\textbf{Grazie per l'attenzione}}}
+			{\Huge \textcolor{rossoPantano}{\textbf{Thanks}}}
 		\end{center}
 		
 	\end{frame}
